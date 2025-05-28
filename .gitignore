@@ -1,0 +1,9 @@
+node_modules
+.env
+dist
+.cache
+build
+yarn.lock
+npm-debug.log
+*.sqlite
+*.log
