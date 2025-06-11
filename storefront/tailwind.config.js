@@ -35,6 +35,7 @@ module.exports = {
           90: "#111827",
         },
       },
+      
       borderRadius: {
         none: "0px",
         soft: "2px",

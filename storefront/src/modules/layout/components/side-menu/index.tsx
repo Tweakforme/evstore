@@ -8,15 +8,15 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import CountrySelect from "../country-select"
 import { HttpTypes } from "@medusajs/types"
 
-const SideMenuItems: { label: string; href: string }[] = [
-  { label: "Home", href: "/" },
-  { label: "Model 3 Parts", href: "/categories/model-3" },
-  { label: "Model Y Parts", href: "/categories/model-y" },
-  { label: "Accessories", href: "/categories/accessories" },
-  { label: "About Us", href: "/about" },
-  { label: "Support", href: "/support" },
-  { label: "Account", href: "/account" },
-  { label: "Cart", href: "/cart" },
+const SideMenuItems: { label: string; href: string; icon?: string }[] = [
+  { label: "Home", href: "/", icon: "🏠" },
+  { label: "Model 3 Parts", href: "/categories/model-3", icon: "🚗" },
+  { label: "Model Y Parts", href: "/categories/model-y", icon: "🚙" },
+  { label: "Accessories", href: "/categories/accessories", icon: "⚡" },
+  { label: "About Us", href: "/about", icon: "ℹ️" },
+  { label: "Support", href: "/support", icon: "🛠️" },
+  { label: "Account", href: "/account", icon: "👤" },
+  { label: "Cart", href: "/cart", icon: "🛒" },
 ]
 
 const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
@@ -30,73 +30,100 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
             <>
               <div className="relative flex h-full">
                 <Popover.Button
-  data-testid="nav-menu-button"
-  className="relative h-full flex items-center px-2 text-lg tracking-wide text-white hover:text-gray-300 transition-colors"
->
-  <BarsThree className="w-6 h-6" /> 
-</Popover.Button>
-
+                  data-testid="nav-menu-button"
+                  className="relative h-full flex items-center px-3 text-lg tracking-wide text-white hover:text-blue-100 transition-colors duration-200 hover:bg-white/10 rounded-md"
+                >
+                  <BarsThree className="w-6 h-6" /> 
+                </Popover.Button>
               </div>
 
-             <Transition
-  show={open}
-  as={Fragment}
-  enter="transition ease-out duration-200"
-  enterFrom="opacity-0 -translate-x-full"
-  enterTo="opacity-100 translate-x-0"
-  leave="transition ease-in duration-200"
-  leaveFrom="opacity-100 translate-x-0"
-  leaveTo="opacity-0 -translate-x-full"
->
-
-               <PopoverPanel
-  static
-  focus
-  className="fixed top-0 left-0 z-50 h-screen w-[90%] max-w-sm text-white bg-black bg-opacity-95 shadow-lg backdrop-blur-2xl p-6 flex flex-col justify-between"
->
-
+              <Transition
+                show={open}
+                as={Fragment}
+                enter="transition ease-out duration-300"
+                enterFrom="opacity-0 -translate-x-full"
+                enterTo="opacity-100 translate-x-0"
+                leave="transition ease-in duration-200"
+                leaveFrom="opacity-100 translate-x-0"
+                leaveTo="opacity-0 -translate-x-full"
+              >
+                <PopoverPanel
+                  static
+                  focus
+                  className="fixed top-0 left-0 z-50 h-screen w-[90%] max-w-sm text-white shadow-2xl backdrop-blur-xl flex flex-col justify-between"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.95) 0%, rgba(59, 130, 246, 0.95) 100%)'
+                  }}
+                >
                   <div>
-                    {/* Close Button */}
-                    <div className="flex justify-end mb-6">
+                    {/* Header with Logo and Close */}
+                    <div className="flex items-center justify-between p-6 border-b border-white/20">
+                      {/* Logo */}
+                      <div className="flex items-center">
+                        <img 
+                          src="/images/logo.png" 
+                          alt="The EV Store" 
+                          className="h-8 w-auto"
+                        />
+                      </div>
+                      
+                      {/* Close Button */}
                       <button
                         onClick={close}
                         aria-label="Close menu"
-                        className="hover:text-gray-400 transition-colors"
+                        className="p-2 hover:bg-white/10 rounded-full transition-colors duration-200"
                       >
                         <XMark className="w-6 h-6" />
                       </button>
                     </div>
 
                     {/* Menu Items */}
-                    <ul className="space-y-6">
-                      {SideMenuItems.map(({ label, href }) => (
-                        <li key={href}>
-                          <LocalizedClientLink
-                            href={href}
-                            onClick={close}
-                            className="block text-2xl font-light hover:text-gray-300 transition-colors"
-                          >
-                            {label}
-                          </LocalizedClientLink>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="p-6">
+                      <ul className="space-y-4">
+                        {SideMenuItems.map(({ label, href, icon }) => (
+                          <li key={href}>
+                            <LocalizedClientLink
+                              href={href}
+                              onClick={close}
+                              className="group flex items-center space-x-4 p-3 rounded-lg hover:bg-white/10 transition-all duration-200 transform hover:translate-x-2"
+                            >
+                              {icon && (
+                                <span className="text-xl group-hover:scale-110 transition-transform duration-200">
+                                  {icon}
+                                </span>
+                              )}
+                              <span className="text-lg font-light group-hover:text-blue-100 transition-colors">
+                                {label}
+                              </span>
+                            </LocalizedClientLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
 
-                  {/* Bottom: Country + Copyright */}
-                  <div className="flex flex-col gap-y-6 mt-12">
+                  {/* Bottom Section */}
+                  <div className="p-6 border-t border-white/20">
+                    {/* Country Select */}
                     {regions && (
                       <div
-                        className="flex justify-between"
+                        className="mb-4 p-3 rounded-lg bg-white/10 backdrop-blur-sm"
                         onMouseEnter={toggleState.open}
                         onMouseLeave={toggleState.close}
                       >
                         <CountrySelect toggleState={toggleState} regions={regions} />
                       </div>
                     )}
-                    <Text className="text-sm text-gray-500">
-                      © {new Date().getFullYear()} Tesla Parts. All rights reserved.
+                    
+                    {/* Copyright */}
+                    <Text className="text-sm text-white/70 text-center">
+                      © {new Date().getFullYear()} The EV Store. All rights reserved.
                     </Text>
+                    
+                    {/* Decorative Element */}
+                    <div className="mt-4 flex justify-center">
+                      <div className="w-12 h-1 bg-white/30 rounded-full"></div>
+                    </div>
                   </div>
                 </PopoverPanel>
               </Transition>

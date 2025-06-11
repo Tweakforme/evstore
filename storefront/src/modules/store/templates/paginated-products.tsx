@@ -1,3 +1,5 @@
+// app/components/PaginatedProducts.tsx
+
 import { cache } from "react"
 import { listProductsWithSort } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
@@ -16,7 +18,6 @@ type PaginatedProductsParams = {
   order?: string
 }
 
-// ✅ Cache region so it doesn’t trigger re-renders
 const getCachedRegion = cache(async (code: string) => {
   return await getRegion(code)
 })
@@ -60,8 +61,27 @@ export default async function PaginatedProducts({
     queryParams.id = productsIds
   }
 
-  if (sortBy && sortBy !== "price_asc") {
-    queryParams.order = sortBy // directly use "price_desc", "name_asc", etc.
+  // Apply sorting based on supported fields
+  if (sortBy) {
+    switch (sortBy) {
+      case "price_asc":
+        queryParams.order = "price"
+        break
+      case "price_desc":
+        queryParams.order = "-price"
+        break
+      case "price_asc":
+        queryParams.order = "title"
+        break
+      case "price_desc":
+        queryParams.order = "-title"
+        break
+      default:
+        queryParams.order = "created_at"
+        break
+    }
+  } else {
+    queryParams.order = "created_at"
   }
 
   const {
