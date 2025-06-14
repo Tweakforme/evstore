@@ -87,6 +87,46 @@ queryParams?: (HttpTypes.FindParams & HttpTypes.StoreProductParams) & { handle?:
 }
 
 /**
+ * Filter products based on Tesla model and category
+ */
+const filterProductsByTesla = (
+  products: HttpTypes.StoreProduct[], 
+  model?: string, 
+  category?: string
+): HttpTypes.StoreProduct[] => {
+  let filteredProducts = products
+
+  // Filter by Tesla model if specified
+  if (model) {
+    filteredProducts = filteredProducts.filter(product => {
+      // Check if product title, description, or metadata contains the model
+      const modelName = model === 'model-3' ? 'Model 3' : 'Model Y'
+      const searchText = `${product.title} ${product.description || ''} ${JSON.stringify(product.metadata || {})}`.toLowerCase()
+      
+      return searchText.includes(modelName.toLowerCase()) || 
+             searchText.includes(model.toLowerCase())
+    })
+  }
+
+  // Filter by category if specified
+  if (category) {
+    filteredProducts = filteredProducts.filter(product => {
+      // Convert category handle to readable format for matching
+      const categoryName = category.split('-').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+      ).join(' ')
+      
+      const searchText = `${product.title} ${product.description || ''} ${JSON.stringify(product.metadata || {})}`.toLowerCase()
+      
+      return searchText.includes(categoryName.toLowerCase()) ||
+             searchText.includes(category.toLowerCase())
+    })
+  }
+
+  return filteredProducts
+}
+
+/**
  * This will fetch 100 products to the Next.js cache and sort them based on the sortBy parameter.
  * It will then return the paginated products based on the page and limit parameters.
  */
@@ -95,11 +135,15 @@ export const listProductsWithSort = async ({
   queryParams,
   sortBy = "created_at",
   countryCode,
+  model,
+  category,
 }: {
   page?: number
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
   sortBy?: SortOptions
   countryCode: string
+  model?: string
+  category?: string
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
@@ -118,21 +162,24 @@ export const listProductsWithSort = async ({
     countryCode,
   })
 
-  const sortedProducts = sortProducts(products, sortBy)
+  // Filter products by Tesla model and category
+  const filteredProducts = filterProductsByTesla(products, model, category)
+  
+  // Sort the filtered products
+  const sortedProducts = sortProducts(filteredProducts, sortBy)
 
   const pageParam = (page - 1) * limit
-
-  const nextPage = count > pageParam + limit ? pageParam + limit : null
+  const filteredCount = filteredProducts.length
+  const nextPage = filteredCount > pageParam + limit ? pageParam + limit : null
 
   const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit)
 
   return {
     response: {
       products: paginatedProducts,
-      count,
+      count: filteredCount, // Use filtered count instead of original count
     },
     nextPage,
     queryParams,
   }
 }
-

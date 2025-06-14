@@ -1,61 +1,85 @@
 "use client"
 
-import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import FilterRadioGroup from "@modules/common/components/filter-radio-group"
 
-type CategoryGroup = {
-  parent: string
-  children: { label: string; handle: string }[]
+type CategoryFilterProps = {
+  model?: string
+  category?: string
+  setQueryParams: (name: string, value: string) => void
+  "data-testid"?: string
 }
 
-type Props = {
-  categories: CategoryGroup[]
-}
+const teslaModels = [
+  { value: "model-3", label: "Model 3" },
+  { value: "model-y", label: "Model Y" }
+]
 
-export function CategoryFilter({ categories }: Props) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const [selected, setSelected] = useState<Record<string, string>>({})
+const teslaCategories = [
+  { value: "front-drive-unit", label: "Front Drive Unit" },
+  { value: "rear-drive-unit", label: "Rear Drive Unit" },
+  { value: "high-voltage-system", label: "High Voltage System" },
+  { value: "body", label: "Body" },
+  { value: "closure-components", label: "Closure Components" },
+  { value: "seats", label: "Seats" },
+  { value: "instrument-panel", label: "Instrument Panel" },
+  { value: "interior-trim", label: "Interior Trim" },
+  { value: "hv-battery-trim", label: "Hv Battery Trim" },
+  { value: "electrical", label: "Electrical" },
+  { value: "thermal-engagement", label: "Thermal Engagement" },
+  { value: "safety-and-restraint", label: "Safety and Restraint" },
+  { value: "infotainment", label: "Infotainment" },
+  { value: "chassis", label: "Chassis" },
+  { value: "steering", label: "Steering" },
+  { value: "brake", label: "Brake" },
+  { value: "wheels-and-tires", label: "Wheels and Tires" }
+]
 
-  useEffect(() => {
-    const currentCategory = searchParams.get("category")
-    if (!currentCategory) return
-
-    const foundGroup = categories.find(group =>
-      group.children.some(c => c.handle === currentCategory)
-    )
-
-    if (foundGroup) {
-      setSelected(prev => ({ ...prev, [foundGroup.parent]: currentCategory }))
+export function CategoryFilter({ 
+  model, 
+  category, 
+  setQueryParams, 
+  "data-testid": dataTestId 
+}: CategoryFilterProps) {
+  
+  const handleModelChange = (value: string) => {
+    setQueryParams("model", value)
+    // Clear category when model changes
+    if (category) {
+      const params = new URLSearchParams(window.location.search)
+      params.delete("category")
+      const newUrl = `${window.location.pathname}?${params.toString()}`
+      window.history.replaceState(null, "", newUrl)
     }
-  }, [searchParams, categories])
+  }
 
-  const updateSelection = (group: string, handle: string) => {
-    setSelected(prev => ({ ...prev, [group]: handle }))
-    const params = new URLSearchParams(searchParams.toString())
-    params.set("category", handle)
-    router.push(`?${params.toString()}`)
+  const handleCategoryChange = (value: string) => {
+    setQueryParams("category", value)
   }
 
   return (
-    <div className="flex flex-wrap gap-4 py-4">
-      {categories.map(group => (
-        <div key={group.parent}>
-          <label className="block text-sm font-medium mb-1">{group.parent}</label>
-          <select
-            className="border px-2 py-1 rounded"
-            value={selected[group.parent] || ""}
-            onChange={e => updateSelection(group.parent, e.target.value)}
-          >
-            <option value="">Select</option>
-            {group.children.map(child => (
-              <option key={child.handle} value={child.handle}>
-                {child.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      ))}
+    <div className="space-y-6">
+      {/* Model Filter */}
+      <FilterRadioGroup
+        title="Tesla Model"
+        items={teslaModels}
+        value={model || ""}
+        handleChange={handleModelChange}
+        data-testid={dataTestId}
+      />
+
+      {/* Category Filter - Only show if model is selected */}
+      {model && (
+        <FilterRadioGroup
+          title="Part Category"
+          items={teslaCategories.map(cat => ({
+            value: cat.value,
+            label: `${model === 'model-3' ? 'Model 3' : 'Model Y'} - ${cat.label}`
+          }))}
+          value={category || ""}
+          handleChange={handleCategoryChange}
+          data-testid={`${dataTestId}-category`}
+        />
+      )}
     </div>
   )
 }

@@ -30,6 +30,7 @@ export default async function PaginatedProducts({
   productsIds,
   countryCode,
   category,
+  model,
 }: {
   sortBy?: SortOptions
   page: number
@@ -38,6 +39,7 @@ export default async function PaginatedProducts({
   productsIds?: string[]
   countryCode: string
   category?: string
+  model?: string
 }) {
   const region = await getCachedRegion(countryCode)
   if (!region) return null
@@ -70,10 +72,10 @@ export default async function PaginatedProducts({
       case "price_desc":
         queryParams.order = "-price"
         break
-      case "price_asc":
+      case "name_asc":
         queryParams.order = "title"
         break
-      case "price_desc":
+      case "name_desc":
         queryParams.order = "-title"
         break
       default:
@@ -91,6 +93,8 @@ export default async function PaginatedProducts({
     queryParams,
     sortBy,
     countryCode,
+    model, // Pass model to the data fetching function
+    category, // Pass category to the data fetching function
   })
 
   const totalPages = Math.ceil(count / PRODUCT_LIMIT)

@@ -1,7 +1,6 @@
 import { listCategories } from "@lib/data/categories"
 import { listCollections } from "@lib/data/collections"
-import { Text, clx } from "@medusajs/ui"
-
+import { Text } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 export default async function Footer() {
@@ -9,132 +8,158 @@ export default async function Footer() {
   const productCategories = await listCategories()
 
   return (
-    <footer className="relative overflow-hidden">
-      {/* Gradient Background with Animated Orbs */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-gray-900 to-black">
-        {/* Animated Background Orbs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-500/5 rounded-full blur-2xl animate-pulse delay-500"></div>
-      </div>
-
+    <footer className="bg-gray-900 text-gray-300">
       {/* Main Footer Content */}
-      <div className="relative z-10 border-t border-gradient-to-r from-green-500/20 via-blue-500/20 to-green-500/20">
-        <div className="content-container">
-          {/* Top Section */}
-          <div className="flex flex-col lg:flex-row items-start justify-between py-16 gap-12">
+      <div className="border-t border-gray-800">
+        <div className="content-container py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-8">
             
-            {/* Logo & Brand Section */}
-            <div className="flex-1 max-w-md">
+            {/* Brand Section */}
+            <div className="lg:col-span-1">
               <div className="mb-6">
-                <div className="bg-white/95 backdrop-blur-sm px-4 py-3 rounded-xl shadow-2xl inline-block">
-                  <img 
-                    src="/images/logo.png" 
-                    alt="The EV Store" 
-                    className="h-10 w-auto"
-                  />
-                </div>
+                <LocalizedClientLink href="/" className="inline-block">
+                  <div className="text-2xl font-semibold text-white">
+                    EV STORE
+                  </div>
+                </LocalizedClientLink>
               </div>
               
-              <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                Elevate your Tesla experience with premium accessories and OEM components. 
-                Your trusted partner in electric vehicle enhancement.
+              <p className="text-sm leading-relaxed mb-6 text-gray-400">
+                Premium Tesla accessories and OEM components. Elevating your electric vehicle experience since 2020.
               </p>
               
-              {/* Social Links */}
-              <div className="flex space-x-4">
-                {[
-                  { icon: "📘", label: "Facebook", href: "#" },
-                  { icon: "🐦", label: "Twitter", href: "#" },
-                  { icon: "📷", label: "Instagram", href: "#" },
-                  { icon: "💼", label: "LinkedIn", href: "#" }
-                ].map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.href}
-                    className="w-12 h-12 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-full flex items-center justify-center text-xl hover:from-green-500/30 hover:to-blue-500/30 transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/10"
-                    aria-label={social.label}
-                  >
-                    {social.icon}
-                  </a>
-                ))}
+              {/* Social Media Links */}
+              <div className="flex space-x-3">
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center justify-center transition-colors duration-200"
+                  aria-label="Facebook"
+                >
+                  <svg className="w-5 h-5 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </a>
+                
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center justify-center transition-colors duration-200"
+                  aria-label="Twitter"
+                >
+                  <svg className="w-5 h-5 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                  </svg>
+                </a>
+                
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center justify-center transition-colors duration-200"
+                  aria-label="Instagram"
+                >
+                  <svg className="w-5 h-5 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm4.965-10.405a1.44 1.44 0 112.881.001 1.44 1.44 0 01-2.881-.001z"/>
+                  </svg>
+                </a>
+                
+                <a
+                  href="https://youtube.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center justify-center transition-colors duration-200"
+                  aria-label="YouTube"
+                >
+                  <svg className="w-5 h-5 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </a>
               </div>
             </div>
 
-            {/* Links Grid */}
-            <div className="flex-2 grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            {/* Quick Links Sections */}
+            <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-8">
               
-              {/* Categories */}
+              {/* Shop */}
               {productCategories?.length > 0 && (
-                <div className="group">
-                  <h3 className="text-white font-semibold text-lg mb-6 relative">
-                    Categories
-                    <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-green-500 to-blue-500 group-hover:w-full transition-all duration-500"></div>
+                <div>
+                  <h3 className="text-white font-medium text-sm uppercase tracking-wider mb-4">
+                    Shop
                   </h3>
                   <ul className="space-y-3">
-                    {productCategories.slice(0, 6).map((c) => {
+                    {productCategories.slice(0, 5).map((c) => {
                       if (c.parent_category) return null
-
                       return (
                         <li key={c.id}>
                           <LocalizedClientLink
-                            className="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-flex items-center group/link"
+                            className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
                             href={`/categories/${c.handle}`}
                           >
-                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-3 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300"></span>
                             {c.name}
                           </LocalizedClientLink>
                         </li>
                       )
                     })}
+                    <li>
+                      <LocalizedClientLink
+                        className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
+                        href="/categories"
+                      >
+                        View All →
+                      </LocalizedClientLink>
+                    </li>
                   </ul>
                 </div>
               )}
 
-              {/* Collections */}
-              {collections?.length > 0 && (
-                <div className="group">
-                  <h3 className="text-white font-semibold text-lg mb-6 relative">
-                    Collections
-                    <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-green-500 to-blue-500 group-hover:w-full transition-all duration-500"></div>
-                  </h3>
-                  <ul className="space-y-3">
-                    {collections.slice(0, 6).map((c) => (
-                      <li key={c.id}>
-                        <LocalizedClientLink
-                          className="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-flex items-center group/link"
-                          href={`/collections/${c.handle}`}
-                        >
-                          <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300"></span>
-                          {c.title}
-                        </LocalizedClientLink>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              {/* Customer Service */}
+              <div>
+                <h3 className="text-white font-medium text-sm uppercase tracking-wider mb-4">
+                  Customer Service
+                </h3>
+                <ul className="space-y-3">
+                  {[
+                    { label: "Contact Us", href: "/contact" },
+                    { label: "Shipping & Returns", href: "/shipping" },
+                    { label: "Size Guide", href: "/size-guide" },
+                    { label: "Track Order", href: "/track-order" },
+                    { label: "FAQ", href: "/faq" },
+                    { label: "Warranty", href: "/warranty" }
+                  ].map((link) => (
+                    <li key={link.href}>
+                      <LocalizedClientLink
+                        href={link.href}
+                        className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
+                      >
+                        {link.label}
+                      </LocalizedClientLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-              {/* Company & Support */}
-              <div className="group">
-                <h3 className="text-white font-semibold text-lg mb-6 relative">
+              {/* Company */}
+              <div>
+                <h3 className="text-white font-medium text-sm uppercase tracking-wider mb-4">
                   Company
-                  <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-green-500 to-blue-500 group-hover:w-full transition-all duration-500"></div>
                 </h3>
                 <ul className="space-y-3">
                   {[
                     { label: "About Us", href: "/about" },
-                    { label: "Contact", href: "/contact" },
-                    { label: "Support", href: "/support" },
-                    { label: "Privacy Policy", href: "/privacy" },
-                    { label: "Terms of Service", href: "/terms" },
-                    { label: "Shipping Info", href: "/shipping" }
-                  ].map((link, index) => (
-                    <li key={index}>
+                    { label: "Careers", href: "/careers" },
+                    { label: "Press", href: "/press" },
+                    { label: "Sustainability", href: "/sustainability" },
+                    { label: "Affiliates", href: "/affiliates" },
+                    { label: "Corporate Sales", href: "/corporate" }
+                  ].map((link) => (
+                    <li key={link.href}>
                       <LocalizedClientLink
                         href={link.href}
-                        className="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-flex items-center group/link"
+                        className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
                       >
-                        <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full mr-3 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300"></span>
                         {link.label}
                       </LocalizedClientLink>
                     </li>
@@ -145,56 +170,63 @@ export default async function Footer() {
           </div>
 
           {/* Newsletter Section */}
-          <div className="border-t border-white/10 py-12">
-            <div className="max-w-2xl mx-auto text-center">
-              <h3 className="text-2xl font-bold text-white mb-4">
-                Stay Charged with Updates
+          <div className="border-t border-gray-800 mt-12 pt-12">
+            <div className="max-w-xl">
+              <h3 className="text-lg font-medium text-white mb-2">
+                Subscribe to our newsletter
               </h3>
-              <p className="text-gray-400 mb-8">
-                Get the latest Tesla accessories, exclusive deals, and EV insights delivered to your inbox.
+              <p className="text-sm text-gray-400 mb-4">
+                Get the latest products and exclusive offers delivered to your inbox.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <form className="flex gap-3">
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="flex-1 px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50 transition-all duration-300"
+                  className="flex-1 px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-sm"
                 />
-                <button className="px-8 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-full font-semibold hover:from-green-600 hover:to-blue-600 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
+                <button 
+                  type="submit"
+                  className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm"
+                >
                   Subscribe
                 </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Section */}
-          <div className="border-t border-white/10 py-8">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="flex items-center space-x-6 text-gray-400 text-sm">
-                <Text>© {new Date().getFullYear()} The EV Store. All rights reserved.</Text>
-              </div>
-              
-              {/* Trust Badges */}
-              <div className="flex items-center space-x-6">
-                <div className="flex items-center space-x-2 text-sm text-gray-400">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span>Secure Checkout</span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm text-gray-400">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                  <span>Fast Shipping</span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm text-gray-400">
-                  <div className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></div>
-                  <span>24/7 Support</span>
-                </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Decorative Bottom Border */}
-      <div className="h-1 bg-gradient-to-r from-green-500 via-blue-500 to-green-500"></div>
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-800 bg-gray-950">
+        <div className="content-container py-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center gap-6 text-xs text-gray-500">
+              <Text>© {new Date().getFullYear()} EV Store. All rights reserved.</Text>
+              <LocalizedClientLink href="/privacy" className="hover:text-gray-300 transition-colors">
+                Privacy Policy
+              </LocalizedClientLink>
+              <LocalizedClientLink href="/terms" className="hover:text-gray-300 transition-colors">
+                Terms of Service
+              </LocalizedClientLink>
+              <LocalizedClientLink href="/cookies" className="hover:text-gray-300 transition-colors">
+                Cookie Policy
+              </LocalizedClientLink>
+            </div>
+            
+            {/* Payment Methods */}
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-gray-500 mr-2">Secure payments:</span>
+              {/* Payment icons placeholder - in real implementation, use actual payment provider icons */}
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-5 bg-gray-800 rounded flex items-center justify-center text-[10px] text-gray-400">VISA</div>
+                <div className="w-8 h-5 bg-gray-800 rounded flex items-center justify-center text-[10px] text-gray-400">MC</div>
+                <div className="w-8 h-5 bg-gray-800 rounded flex items-center justify-center text-[10px] text-gray-400">AMEX</div>
+                <div className="w-8 h-5 bg-gray-800 rounded flex items-center justify-center text-[10px] text-gray-400">PAY</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </footer>
   )
 }

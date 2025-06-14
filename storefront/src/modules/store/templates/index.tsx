@@ -1,5 +1,4 @@
 import { Suspense } from "react"
-
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
@@ -9,10 +8,14 @@ import PaginatedProducts from "./paginated-products"
 const StoreTemplate = ({
   sortBy,
   page,
+  model,
+  category,
   countryCode,
 }: {
   sortBy?: SortOptions
   page?: string
+  model?: string
+  category?: string
   countryCode: string
 }) => {
   const pageNumber = page ? parseInt(page) : 1
@@ -31,15 +34,28 @@ const StoreTemplate = ({
         className="relative z-10 flex flex-col small:flex-row small:items-start py-6 content-container"
         data-testid="category-container"
       >
-        <RefinementList sortBy={sort} />
+        <RefinementList 
+          sortBy={sort} 
+          model={model}
+          category={category}
+        />
         <div className="w-full">
           <div className="mb-8 text-2xl-semi">
-            <h1 data-testid="store-page-title">All products</h1>
+            <h1 data-testid="store-page-title">
+              {model && category 
+                ? `${model === 'model-3' ? 'Model 3' : 'Model Y'} - ${category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}`
+                : model 
+                ? `${model === 'model-3' ? 'Model 3' : 'Model Y'} Parts`
+                : 'All products'
+              }
+            </h1>
           </div>
           <Suspense fallback={<SkeletonProductGrid />}>
             <PaginatedProducts
               sortBy={sort}
               page={pageNumber}
+              model={model}
+              category={category}
               countryCode={countryCode}
             />
           </Suspense>
